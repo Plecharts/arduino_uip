@@ -40,6 +40,21 @@ UIPClient UIPServer::available() {
   return UIPClient();
 }
 
+size_t UIPServer::foreach(void (*handler)(UIPClient&)) {
+  UIPEthernet.tick();
+  size_t connections = 0;
+  
+  for(int sock = 0; sock < UIP_CONNS; ++sock) {
+    struct uip_conn* conn = &uip_conns[sock];
+    if(conn->lport == _port) {
+      UIPClient client(conn);
+      handler(client);
+      ++connections;
+    }
+  }
+  return connections;
+}
+
 void UIPServer::begin() {
   uip_listen(_port);
   UIPEthernet.tick();
