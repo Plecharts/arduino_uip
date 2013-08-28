@@ -8,11 +8,14 @@
  *
  *      -----------------
  *
- * This packet reply example listens on port 885 for packets that have 4 bytes big-endian length
- * in front of them and then returns them back to sender.
+ * This packet reply example listens on port 885 for packets that have 4 bytes
+ * big-endian length in front of them and then returns them back to sender.
+ *
  * Example packet: 0x03 0x00 0x00 0x00 0x48 0x69 0x21
  * This translates to: length of packet - 3 bytes
  *                     payload - 0x48 0x69 0x21 (ASCII Hi!)
+ *
+ * Copyright (C) 2013 Jaroslav Peska <peska.jaroslav@gmail.com 
  */
 
 #include <util.h>
@@ -30,7 +33,7 @@ void setup()
 
   UIPEthernet.set_uip_callback(&UIPClient::uip_callback);
 
-  uint8_t mac[6] = {0x00,0x01,0x02,0x03,0x04,0x05  };
+  uint8_t mac[6] = {0x00,0x01,0x02,0x03,0x04,0x05};
   IPAddress myIP(192,168,1,136);
 
   UIPEthernet.begin(mac,myIP);
@@ -41,7 +44,6 @@ void setup()
 void loop()
 {
   server.foreach(Handler);
-  delay(50);
 }
 
 int ReceivePacket(UIPClient& client, uint8_t* buffer)
